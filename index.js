@@ -7,9 +7,16 @@ const port = 3000;
 app.get("/", async(req, res)=>{
     try {
         const result = await axios.get("https://www.thecocktaildb.com/api/json/v1/1/random.php");
-        res.json(result.data);
+        const drink = result.data.drinks[0];
+        res.render("index.ejs", {
+            type:drink.strAlcoholic,
+            catagory:drink.strCategory,
+            glass:drink.strGlass,
+            instruction:drink.strInstructions
+        })
     } catch (error) {
         console.log(error);
+        res.status(404).send("there is somthing wrong with the server..!");
     }
   
 })
